@@ -1,0 +1,259 @@
+
+
+Numba, a JIT compiler for fast numerical code
+=============================================
+
+Speaker presentation
+--------------------
+
+* Software engineer at Continuum, full-time Numba
+* Core CPython developer
+* Not a scientist
+
+What is Numba?
+--------------
+
+* A just-in-time compiler based on LLVM
+* Runs on CPython 2.6 to 3.4
+* Opt-in
+* Specialized in numerical computation
+* BSD-licensed, cross-platform (Linux, OS X, Windows)
+
+Why a just-in-time compiler?
+----------------------------
+
+* Pure Python is slow at number crunching
+* Numpy has C accelerations, but they only apply to well-behaved problems
+  - array operations are memory-heavy, can thrash CPU caches
+* Many algorithms have irregular data access, per-element branching, etc.
+
+.. insert benchmark example (Mandelbrot?)
+
+LLVM
+----
+
+* A mature library and toolkit for writing compilers (clang)
+* Multi-platform
+* Supported by the industry
+* Has a wide range of integrated optimizations
+  - inlining
+  - loop unrolling
+  - SIMD vectorization
+  - etc.
+* Allows us to focus on *Python*
+
+.. insert LLVM optimization example (arithmetic series)
+
+Runs on CPython
+---------------
+
+* Can run side by side with regular Python code
+* Can run side by side with all third-party extensions and libraries
+
+Opt-in
+------
+
+* Only accelerate select functions decorated by you
+* Allows us to relax semantics in exchange for speed
+
+Specialized
+-----------
+
+* Understands numbers
+* Understands Numpy arrays
+* And a couple other things...
+
+Multiple targets
+----------------
+
+* Main target is the CPU
+  - officially supported: x86, x86-64
+* CUDA target for NVidia GPUs with a limited feature set
+* Support for other architectures may later be added:
+  - HSA (GPU+CPU on AMD APUs)
+  - ARM processors
+  - ...
+
+
+Numba architecture
+------------------
+
+* Straight-forward function-based JIT
+* Compilation pipeline to go from one representation to another
+  - Python bytecode
+  - Numba IR
+  - LLVM IR
+* Low-level optimizations and codegen delegated to LLVM
+* Generation of Python-facing wrappers
+
+.. Python bytecode example
+.. Numba IR example
+.. LLVM IR example
+.. Native asm example
+
+Numba specializations
+---------------------
+
+* Reimplement common numeric operations as LLVM code generation
+* Examples: math, cmath, random
+  .. XXX better example?
+* Allows inlining and other efficient optimizations
+
+
+Supported Python syntax
+-----------------------
+
+* Supported constructs:
+  - if / else / for / while / break / continue
+  - raising exceptions
+  - generators (!)
+  - etc.
+
+* Unsupported constructs:
+  - try/except/finally
+  - with
+  - (list, set, dict) comprehensions
+  - yield from
+
+Supported Python features
+-------------------------
+
+* Types
+  - ...
+* Builtins
+  - ...
+
+Supported Python modules
+------------------------
+
+* Standard library:
+  - cmath, math, random, ctypes
+* Third-party:
+  - cffi, numpy
+
+Supported Numpy features
+------------------------
+
+...
+
+Limitations
+-----------
+
+* Recursion not supported
+* Can't compile classes
+* Can't allocate array data
+* Type inference must be able to determine all types
+
+Semantic changes
+----------------
+
+* Fixed-sized integers
+* Global and outer variables frozen
+* No frame introspection inside JIT functions:
+  - tracebacks
+  - debugging
+
+
+Using Numba: @jit
+-----------------
+
+* @jit-decorate a function to designate it for JIT compilation
+
+.. example
+
+* Options:
+  - nopython
+  - nogil
+
+.. example(s)
+
+
+Using Numba: @vectorize
+-----------------------
+
+* Compiles a scalar function into a Numpy universal function
+
+* What is a universal function?
+  - Examples: np.add, np.mult, np.sqrt, etc.
+  - Apply an element-wise operation on entire arrays
+  - Automatic broadcasting
+  - Reduction methods: np.add.reduce(), np.add.accumulate()...
+
+* Traditionally requires coding in C
+
+.. example(s)
+
+Using Numba: @guvectorize
+-------------------------
+
+* Compiles a element-wise or subarray-wise function into a generalized
+  universal function
+
+* What is a generalized universal function?
+  - like a universal function, but allows to peek at other elements
+  - e.g. moving window average
+  - automatic broadcasting, but not automatic reduction methods
+
+.. example: moving window average?
+
+Benchmarks
+----------
+
+...
+
+
+
+CUDA support
+------------
+
+* Numba provides a @cuda.jit decorator
+
+* Exposes the CUDA programming model
+
+* Parallel operation:
+  - threads
+  - blocks of threads
+  - grid of blocks
+
+* Distinguishing between:
+  - kernel functions (called from CPU)
+  - device functions (called from GPU)
+
+
+CUDA support
+------------
+
+* Limited array of features available
+  - features requiring C helper code unavailable
+
+* Need to make use of CUDA knowledge
+
+* Need to take hardware capabilities into account
+
+.. example
+
+.. CUDA benchmarks?
+
+
+Installing Numba
+----------------
+
+* Recommended: conda install numba
+
+* Otherwise: install LLVM 3.5, compile llvmlite, install numba from source
+
+
+
+Contact
+-------
+
+* http://numba.pydata.org/
+
+* Code and issue tracker at https://github.com/numba/numba/
+
+* Numba-users mailing-list
+
+* Numba is commercially supported -> sales@continuum.io
+  - consulting
+  - enhancements
+  - support for new architectures

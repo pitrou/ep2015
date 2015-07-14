@@ -1,0 +1,73 @@
+
+
+Examples
+--------
+
+- ising: http://matthewrocklin.com/blog/work/2015/02/28/Ising/
+
+- Graham: UKMAC2014-final.pdf
+
+    """
+    I took this poster to the UK Manycore Conference 2014 which explains Siu's
+    SPCA algorithm in summary - just sending it over in case it is of any help
+    with preparing for your PyCon talk.
+    """
+
+- Stan: https://drive.google.com/a/continuum.io/folderview?id=0BzJx9jBvpKYZUHRsR3MxQmhxaVE&usp=drive_web
+
+    """
+    That folder contains a short talk I gave on Numba at the end of a seminar, and
+    also a much expanded talk Travis gave that incorporates some of slides from my
+    talke with others he had
+
+    As for a case study, you should ask @Oscar to give you some examples from the
+    Praxes x-ray crystallography project.
+
+    One of the larger ones was using rewriting Newton's method into Numba so we
+    could inline a user function and compile the whole thing.
+
+    The original code used a generic solver from scipy that had to call back into
+    Python for every evaluation of the objective function.
+    """
+
+
+LLVM optimizations
+------------------
+
+inlining
+loop unrolling
+vectorizing
+
+funny: sum(0...n) => n(n-1)/2
+
+Install
+-------
+
+conda
+
+(otherwise: build LLVM and llvmlite)
+
+
+Benchmarks
+----------
+
+ising
+
+CPython: 11.9
+Numba: 0.093 -> 130x faster
+
+Mandelbrot (10 iters):
+
+CPython: 3.74  -> 1x
+Numpy: 0.2     -> 19x
+Numba (CPU): 0.031   -> 120x
+Numba (GPU): 0.010   -> 370x
+
+Mandelbrot (20 iters):
+
+CPython: 4.98  -> 1x
+Numpy: 0.40     -> 12x     <-- FP overflows
+Numba (CPU): 0.046   -> 110x
+Numba (GPU): 0.014   -> 355x
+
+(GPU is a 70€ GT 730)
