@@ -140,8 +140,8 @@ Numba architecture
 Compilation pipeline
 --------------------
 
-.. image:: ../archi2.png
-   :width: 60%
+.. image:: ../how-numba-works.png
+   :width: 95%
    :align: center
 
 
