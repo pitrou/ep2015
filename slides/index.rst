@@ -25,12 +25,12 @@ Why a just-in-time compiler?
 
 * Pure Python is slow at number crunching
 
+* Want C-like speed but without writing C (or Fortran!)
+
 * Numpy has C accelerations, but they only apply to well-behaved problems
    - array operations are memory-heavy, can thrash CPU caches
 
 * Many algorithms have irregular data access, per-element branching, etc.
-
-* Want C-like speed but without writing C (or Fortran!)
 
 * Fit for interactive use
 
@@ -145,6 +145,15 @@ Compilation pipeline
    :align: center
 
 
+Numba types
+-----------
+
+* ``int8``, ``int16``, ``int32``, ``int64``, ``uint8``, ...
+* typed tuples (e.g. ``(int8, float64)``)
+* 1D contiguous arrays, 1D non-contiguous, 2D C-contiguous, etc.
+* and so on
+
+
 Numba specializations
 ---------------------
 
@@ -189,6 +198,9 @@ Supported Python features
 
   - abs, enumerate, len, min, max, print, range, round, zip
 
+* Operators
+
+
 Supported Python modules
 ------------------------
 
@@ -208,11 +220,15 @@ Supported Numpy features
    - structured
    - except when containing Python objects
 
+* Constructors : ``np.empty``, etc.
+
 * Iterating, indexing, slicing
 
-* Reductions: argmax(), max(), prod() etc.
+* Reductions: ``.argmax()``, ``.prod()``, etc.
 
 * Scalar types and values (including ``datetime64`` and ``timedelta64``)
+
+* ``numpy.random``
 
 
 Limitations
@@ -220,7 +236,6 @@ Limitations
 
 * Recursion not supported
 * Can't compile classes
-* Can't allocate array data
 * Type inference must be able to determine all types
 
 Semantic changes
@@ -291,15 +306,6 @@ Using Numba: @guvectorize
   - like a universal function, but allows to peek at other elements
   - e.g. moving window average
   - automatic broadcasting, but not automatic reduction methods
-
-
-@vectorize performance
-----------------------
-
-Vectorizing optimizes the memory cost on large arrays.
-
-.. image:: ../vect-reldiff.png
-   :width: 90%
 
 
 @jit example: Ising models
@@ -375,14 +381,14 @@ Installing Numba
 
    conda install numba
 
-* Otherwise: install LLVM 3.5.x, compile llvmlite, install numba from source
+* Otherwise: install LLVM 3.6.x, compile llvmlite, install numba from source
 
 
 
 Contact
 -------
 
-* http://numba.pydata.org/
+* Documentation at http://numba.pydata.org/
 
 * Code and issue tracker at https://github.com/numba/numba/
 
@@ -393,4 +399,4 @@ Contact
   - consulting
   - enhancements
   - support for new architectures
-  - NumbaPro
+  - NumbaPro / Accelerate
