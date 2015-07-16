@@ -399,4 +399,4 @@ Contact
   - consulting
   - enhancements
   - support for new architectures
-  - NumbaPro / Accelerate
+  - NumbaPro
